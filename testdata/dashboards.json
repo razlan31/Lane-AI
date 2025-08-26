@@ -1,0 +1,20 @@
+[
+  {
+    "venture_id": 1,
+    "name": "Coffee Kiosk Dashboard",
+    "metrics": [
+      "Revenue",
+      "Expenses",
+      "Profit Margin"
+    ]
+  },
+  {
+    "venture_id": 2,
+    "name": "Food Truck Dashboard",
+    "metrics": [
+      "Revenue",
+      "Inventory",
+      "Cashflow"
+    ]
+  }
+]

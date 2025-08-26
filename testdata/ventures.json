@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "Coffee Kiosk",
+    "objective": "Grow sales to $30k/month",
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "name": "Food Truck",
+    "objective": "Expand to 2 trucks by end of year",
+    "status": "active"
+  }
+]

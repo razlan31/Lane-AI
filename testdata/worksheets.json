@@ -1,0 +1,19 @@
+[
+  {
+    "venture_id": 1,
+    "type": "Cashflow Projection",
+    "data": {
+      "month1": 2000,
+      "month2": 3500,
+      "month3": 5000
+    }
+  },
+  {
+    "venture_id": 2,
+    "type": "ROI Calculator",
+    "data": {
+      "investment": 10000,
+      "return": 18000
+    }
+  }
+]
