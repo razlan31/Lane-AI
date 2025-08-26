@@ -1,5 +1,19 @@
-LaneAI Documentation Bundle v1.0.9
-==================================
-This package contains documentation and reference materials for LaneAI.
+# Lane AI
 
-Timestamp: 2025-08-25T04:31:51.997937Z
+Your Business Co-Pilot.
+
+Project structure:
+- src/ — app code (React + Tailwind + shadcn/ui)
+- docs/ — pricing, runbook, safeguards
+- branding/ — logos & theme
+- landing/ — static site
+- testdata/ — sample JSON
+
+Run locally:
+1) npm install
+2) npm run dev
+
+Build:
+- npm run build
+
+Docs: see the docs/ folder.
