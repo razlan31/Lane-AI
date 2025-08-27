@@ -23,14 +23,12 @@ export default function ROIWorksheet({ ventureId, userId }) {
     setError(null);
     setLoading(true);
     try {
-      // Deterministic calc (single source)
       const out = computeROI(inputs);
       setResult(out);
 
-      // Save to worksheets table
       const payload = {
         venture_id: ventureId || null,
-        user_id: userId || null,
+        user_id: userId || 'anonymous',
         type: 'roi',
         inputs,
         outputs: out
@@ -39,9 +37,9 @@ export default function ROIWorksheet({ ventureId, userId }) {
       const { error: insertErr } = await supabase.from('worksheets').insert([payload]);
       if (insertErr) throw insertErr;
 
-      // Emit timeline event
       await supabase.from('timeline_events').insert([{
         venture_id: ventureId || null,
+        user_id: userId || 'anonymous',
         kind: 'insight',
         title: 'ROI run',
         body: `ROI run saved.`,
@@ -56,8 +54,73 @@ export default function ROIWorksheet({ ventureId, userId }) {
     }
   }
 
+  // Build a Strategy Snapshot HTML identical to verify export but client-side
+  function buildSnapshotHtml(out) {
+    const snapshot = {
+      inputs,
+      out
+    };
+    const html = `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Strategy Snapshot — ROI</title>
+  <style>
+    body{font-family: Arial, Helvetica, sans-serif; padding:30px; color:#111}
+    h1{font-size:20px;margin-bottom:8px}
+    h2{font-size:14px;margin-top:18px}
+    pre{background:#f7f7f7;padding:12px;border-radius:6px;overflow:auto}
+    .section{margin-bottom:18px}
+  </style>
+</head>
+<body>
+  <h1>Strategy Snapshot — ROI</h1>
+  <div class="section"><strong>Situation</strong>
+    <div>ROI worksheet run</div>
+  </div>
+  <div class="section"><h2>Key Numbers</h2>
+    <pre>${JSON.stringify(out, null, 2)}</pre>
+  </div>
+  <div class="section"><h2>Recommendation</h2>
+    <div>Review payback month and net. Use this snapshot as a decision artifact.</div>
+  </div>
+  <div class="section"><h2>Next Actions</h2>
+    <ul><li>Share with stakeholders</li><li>Run sensitivity scenarios</li></ul>
+  </div>
+  <div class="section"><h2>Assumptions</h2>
+    <pre>${JSON.stringify(inputs, null, 2)}</pre>
+  </div>
+</body>
+</html>`;
+    return html;
+  }
+
+  function download(filename, content, mime = 'text/html') {
+    const blob = new Blob([content], { type: mime + ';charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function onExportSnapshot() {
+    if (!result) return alert('Run the ROI first.');
+    const html = buildSnapshotHtml(result);
+    download('Strategy_Snapshot_ROI.html', html, 'text/html');
+  }
+
+  function onExportJSON() {
+    if (!result) return alert('Run the ROI first.');
+    const payload = { inputs, outputs: result };
+    download('roi_response.json', JSON.stringify(payload, null, 2), 'application/json');
+  }
+
   return (
-    <div style={{ maxWidth: 760, padding: 18, background: 'var(--card, #0b1220)', borderRadius: 10 }}>
+    <div style={{ maxWidth: 760, padding: 18, background: 'var(--card, #fff)', borderRadius: 10 }}>
       <h3>ROI Worksheet</h3>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -87,6 +150,8 @@ export default function ROIWorksheet({ ventureId, userId }) {
           {loading ? 'Running...' : 'Run & Save'}
         </button>
         <button onClick={() => { setResult(null); setError(null); }} style={{ marginLeft: 8 }}>Reset</button>
+        <button onClick={onExportSnapshot} style={{ marginLeft: 8 }}>Export Snapshot (HTML)</button>
+        <button onClick={onExportJSON} style={{ marginLeft: 8 }}>Export JSON</button>
       </div>
 
       {error && <div style={{ color: 'salmon', marginTop: 12 }}>{error}</div>}
