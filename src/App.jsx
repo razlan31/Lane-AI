@@ -21,22 +21,38 @@ export default function App() {
           <h2 className="text-xl font-semibold mb-2">Dashboard</h2>
           <Dashboard />
         </section>
+        <section className="p-4 bg-white shadow rounded">
           <h2 className="text-xl font-semibold mb-2">Notes</h2>
           <Notes />
+        </section>
+        <section className="p-4 bg-white shadow rounded">
           <h2 className="text-xl font-semibold mb-2">Chat</h2>
           <Chat />
+        </section>
+        <section className="p-4 bg-white shadow rounded">
           <h2 className="text-xl font-semibold mb-2">Workspace</h2>
           <Workspace />
+        </section>
+        <section className="p-4 bg-white shadow rounded">
           <h2 className="text-xl font-semibold mb-2">Worksheet</h2>
           <Worksheet />
+        </section>
+        <section className="p-4 bg-white shadow rounded">
           <h2 className="text-xl font-semibold mb-2">AIHQ</h2>
           <AIHQ />
+        </section>
+        <section className="p-4 bg-white shadow rounded">
           <h2 className="text-xl font-semibold mb-2">Onboarding</h2>
           <Onboarding />
+        </section>
+        <section className="p-4 bg-white shadow rounded">
           <h2 className="text-xl font-semibold mb-2">Founder Mode</h2>
           <FounderMode />
+        </section>
+        <section className="p-4 bg-white shadow rounded">
           <h2 className="text-xl font-semibold mb-2">MultiView Toggle</h2>
           <MultiViewToggle />
+        </section>
       </div>
     </div>
   );
